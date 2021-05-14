@@ -94,6 +94,7 @@ class ViewController: UIViewController {
                 self.score = 0
                 self.countQuestions = 0
                 self.correctAnswer = 0
+                self.askQuestion()
             }
             ac.addAction(UIAlertAction(title: "Play Again?", style: .default, handler: resetGameState))
         }
