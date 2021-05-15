@@ -42,6 +42,15 @@ class ViewController: UIViewController {
         
         buttonsSetup()
         askQuestion(action: nil)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(showScore))
+    }
+    
+    @objc func showScore() {
+        let scoreText = "Guess The Flag Score: \(score)"
+        let vc = UIAlertController(title: "Game Progress", message: scoreText, preferredStyle: .alert)
+        vc.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
+        present(vc, animated: true)
     }
     
     func buttonsSetup() {
