@@ -33,6 +33,15 @@ class ViewController: UITableViewController {
         pictures.sort()
         
         print(pictures)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(recommendApp))
+    }
+    
+    @objc func recommendApp() {
+        let recommendText = "I do recommend Project1 from 100 Days Of Swift! 👍"
+        let vc = UIActivityViewController(activityItems: [recommendText], applicationActivities: nil)
+        vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        present(vc, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
