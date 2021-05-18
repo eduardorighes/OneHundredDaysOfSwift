@@ -12,10 +12,8 @@ class ViewController: UIViewController, WKNavigationDelegate {
 
     var webView: WKWebView!
     var progressView: UIProgressView!
-    let websites = [
-        "hackingwithswift.com",
-        "apple.com"
-    ]
+    var allowedWebsites: [String]?
+    var website: String?
     
     override func loadView() {
         webView = WKWebView()
@@ -26,7 +24,9 @@ class ViewController: UIViewController, WKNavigationDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        /*
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Open", style: .plain, target: self, action: #selector(openTapped))
+        */
         
         let goBack = UIBarButtonItem(image: UIImage(named: "back"), style: .plain, target: webView, action: #selector(webView.goBack))
         
@@ -45,11 +45,14 @@ class ViewController: UIViewController, WKNavigationDelegate {
         
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
         
-        let url = URL(string: "https://" + websites[0])!
-        webView.load(URLRequest(url: url))
-        webView.allowsBackForwardNavigationGestures = true
+        if let website = website {
+            let url = URL(string: "https://" + website)!
+            webView.load(URLRequest(url: url))
+            webView.allowsBackForwardNavigationGestures = true
+        }
     }
 
+    /*
     @objc func openTapped() {
         let ac = UIAlertController(title: "Open page...", message: nil, preferredStyle: .actionSheet)
         for website in websites {
@@ -59,6 +62,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
         ac.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(ac, animated: true)
     }
+    */
     
     func openPage(action: UIAlertAction) {
         guard let website = action.title else { return }
@@ -73,9 +77,14 @@ class ViewController: UIViewController, WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let allowed = allowedWebsites else {
+            decisionHandler(.cancel)
+            return
+        }
+        
         let url = navigationAction.request.url
         if let host = url?.host {
-            for website in websites {
+            for website in allowed {
                 if host.contains(website) {
                     decisionHandler(.allow)
                     return
