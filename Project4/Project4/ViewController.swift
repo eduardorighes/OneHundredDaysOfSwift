@@ -28,6 +28,10 @@ class ViewController: UIViewController, WKNavigationDelegate {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Open", style: .plain, target: self, action: #selector(openTapped))
         
+        let goBack = UIBarButtonItem(image: UIImage(named: "back"), style: .plain, target: webView, action: #selector(webView.goBack))
+        
+        let goForward = UIBarButtonItem(image: UIImage(named: "forward"), style: .plain, target: webView, action: #selector(webView.goForward))
+        
         let refresh = UIBarButtonItem(barButtonSystemItem: .refresh, target: webView, action: #selector(webView.reload))
 
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
@@ -36,7 +40,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
         progressView.sizeToFit()
         let progress = UIBarButtonItem(customView: progressView)
         
-        toolbarItems = [progress, spacer, refresh]
+        toolbarItems = [progress, spacer, goBack, goForward, refresh]
         navigationController?.isToolbarHidden = false
         
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
