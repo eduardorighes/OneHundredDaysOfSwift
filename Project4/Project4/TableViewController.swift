@@ -18,7 +18,7 @@ class TableViewController: UITableViewController {
         super.viewDidLoad()
 
         title = "Simple Browser"
-        navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
 
     // MARK: - Table view data source

@@ -42,6 +42,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
         
         toolbarItems = [progress, spacer, goBack, goForward, refresh]
         navigationController?.isToolbarHidden = false
+        navigationItem.largeTitleDisplayMode = .never
         
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
         
