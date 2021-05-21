@@ -7,6 +7,45 @@
 
 import UIKit
 
+enum WordError: Error {
+    
+    case tooShort(message: String)
+    case sameWord(message: String)
+    case notPossible(message: String)
+    case notOriginal(message: String)
+    case notReal(message: String)
+    
+    func title() -> String {
+        switch self {
+        case .tooShort:
+            return "Word too short"
+        case .sameWord:
+            return "Same word"
+        case .notPossible:
+            return "Word not possible"
+        case .notOriginal:
+            return "Word not original"
+        case .notReal:
+            return "Word not real"
+        }
+    }
+    
+    func message() -> String {
+        switch self {
+        case .tooShort(let message):
+            return message
+        case .sameWord(let message):
+            return message
+        case .notPossible(let message):
+            return message
+        case .notOriginal(let message):
+            return message
+        case .notReal(let message):
+            return message
+        }
+    }
+}
+
 class ViewController: UITableViewController {
 
     var allWords = [String]()
@@ -56,36 +95,47 @@ class ViewController: UITableViewController {
     }
     
     func submit(_ answer: String) {
-        let startWord = title!
         let lowerAnswer = answer.lowercased()
+        do {
+            try validateWord(word: lowerAnswer)
+            //
+            // About the debug challenge...
+            // Insert lowercase or do isOriginal to be case-insensitive
+            //
+            usedWords.insert(lowerAnswer, at: 0)
+            // we have our usedWords[0] in place so once we
+            // add the table row, it will fetch that
+            let indexPath = IndexPath(row: 0, section: 0)
+            tableView.insertRows(at: [indexPath], with: .automatic)
+        } catch let error {
+            if let e = error as? WordError {
+                showErrorMessage(title: e.title(), message: e.message())
+            }
+        }
+    }
+    
+    func validateWord(word: String) throws {
+        let startWord = title!
+        let lowerAnswer = word.lowercased()
+        
+        if lowerAnswer.count < 3 {
+            throw WordError.tooShort(message: "The word is too short!")
+        }
         
         if lowerAnswer == startWord {
-            showErrorMessage(title: "Word is start word", message: "You can't use the start word!")
-        } else {
-            if isPossible(word: lowerAnswer) {
-                if isOriginal(word: lowerAnswer) {
-                    if isReal(word: lowerAnswer) {
-                        //
-                        // About the debug challenge...
-                        // Insert lowercase or do isOriginal to be case-insensitive
-                        //
-                        usedWords.insert(lowerAnswer, at: 0)
-                        // we have our usedWords[0] in place so once we
-                        // add the table row, it will fetch that
-                        let indexPath = IndexPath(row: 0, section: 0)
-                        tableView.insertRows(at: [indexPath], with: .automatic)
-                        
-                        return
-                    } else {
-                        showErrorMessage(title: "Word not recognised", message: "You can't make them up, you know!")
-                    }
-                } else {
-                    showErrorMessage(title: "Word already used", message: "Be more original!")
-                }
-            } else {
-                guard let title = title?.lowercased() else { return }
-                showErrorMessage(title: "Word not possible", message: "You can't spell that word from \(title)")
-            }
+            throw WordError.sameWord(message: "It is the same as the start word!")
+        }
+        
+        if !isPossible(word: lowerAnswer) {
+            throw WordError.notPossible(message: "You can't spell that word from \(startWord)")
+        }
+        
+        if !isOriginal(word: lowerAnswer) {
+            throw WordError.notOriginal(message: "Be more original")
+        }
+        
+        if !isReal(word: lowerAnswer) {
+            throw WordError.notReal(message: "You can't make them up, you know!")
         }
     }
     
