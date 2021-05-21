@@ -107,7 +107,10 @@ class ViewController: UITableViewController {
             // add the table row, it will fetch that
             let indexPath = IndexPath(row: 0, section: 0)
             tableView.insertRows(at: [indexPath], with: .automatic)
-        } catch let error {
+        } catch {
+            //
+            // error is implicitly declared in a catch block
+            //
             if let e = error as? WordError {
                 showErrorMessage(title: e.title(), message: e.message())
             }
