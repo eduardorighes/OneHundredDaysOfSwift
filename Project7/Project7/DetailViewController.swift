@@ -27,10 +27,14 @@ class DetailViewController: UIViewController {
         <html>
         <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <style> body { font-size: 150%; } </style>
+        <style>
+            body { font-size: 150%; font-family: Arial; }
+            #title { font-variant:small-caps; font-weight: bold; }
+        </style>
         </head>
         <body>
-        <h3>\(detailItem.title)</h3>
+        <p id="title">\(detailItem.title)</p>
+        <hr/>
         <p>\(detailItem.body)</p>
         </body>
         </html>
