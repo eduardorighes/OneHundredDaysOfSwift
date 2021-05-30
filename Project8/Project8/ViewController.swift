@@ -18,6 +18,8 @@ class ViewController: UIViewController {
     var activatedButtons = [UIButton]()
     var solutions = [String]()
     
+    var levelQuestionCount = 0
+    
     var score = 0 {
         didSet {
             scoreLabel.text = "Score: \(score)"
@@ -75,6 +77,8 @@ class ViewController: UIViewController {
         
         let buttonsView = UIView()
         buttonsView.translatesAutoresizingMaskIntoConstraints = false
+        buttonsView.layer.borderWidth = 1
+        buttonsView.layer.borderColor = UIColor.lightGray.cgColor
         view.addSubview(buttonsView)
         
         NSLayoutConstraint.activate([
@@ -152,11 +156,21 @@ class ViewController: UIViewController {
             currentAnswer.text = ""
             score += 1
             
-            if score % 7 == 0 {
+            levelQuestionCount -= 1
+            
+            if levelQuestionCount == 0 {
                 let ac = UIAlertController(title: "Well done!", message: "Are you ready for the next level?", preferredStyle: .alert)
                 ac.addAction(UIAlertAction(title: "Let's go!", style: .default, handler: levelUp))
                 present(ac, animated: true)
             }
+        } else {
+            let ac = UIAlertController(title: "Wrong answer!", message: "Your answer does not match any valid answers. Try again.", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Dismiss", style: .default) { [weak self] _ in
+                self?.clearAnswer()
+                self?.score -= 1
+            }
+            ac.addAction(action)
+            present(ac, animated: true)
         }
     }
     
@@ -171,7 +185,7 @@ class ViewController: UIViewController {
         }
     }
     
-    @objc func clearTapped(_ sender: UIButton) {
+    func clearAnswer() {
         currentAnswer.text = ""
         
         for btn in activatedButtons {
@@ -179,6 +193,10 @@ class ViewController: UIViewController {
         }
         
         activatedButtons.removeAll()
+    }
+    
+    @objc func clearTapped(_ sender: UIButton) {
+        clearAnswer()
     }
 
     func loadLevel() {
@@ -190,6 +208,8 @@ class ViewController: UIViewController {
             if let levelContents = try? String(contentsOf: levelFileURL) {
                 var lines = levelContents.components(separatedBy: "\n")
                 lines.shuffle()
+                
+                levelQuestionCount = lines.count
                 
                 for (index, line) in lines.enumerated() {
                     let parts = line.components(separatedBy: ": ")
