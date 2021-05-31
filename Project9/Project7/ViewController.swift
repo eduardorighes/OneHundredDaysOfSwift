@@ -14,29 +14,36 @@ class ViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        //
+        // This part differs from the tutorial:
+        // XCode will complain about UI code in fetchJSON method so left
+        // it in viewDidLoad.
+        // Also have to pass the URL string as a parameter for performSelector(inBackground:with:)
+        // so fetchJson() does not know anything about the UI.
+        //
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon-info"), style: .plain, target: self, action: #selector(showCredits))
-        
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchPetitions))
-        
+        performSelector(inBackground: #selector(fetchJSON), with: jsonURL())
+    }
+
+    func jsonURL() -> String {
         let urlString: String
-        
         if navigationController?.tabBarItem.tag == 0 {
             urlString = "https://www.hackingwithswift.com/samples/petitions-1.json"
         } else {
             urlString = "https://www.hackingwithswift.com/samples/petitions-2.json"
         }
-        
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            if let url = URL(string: urlString) {
-                if let data = try? Data(contentsOf: url) {
-                    self?.parse(json: data)
-                    return
-                }
-            }
-            self?.showError()
+        return urlString
+    }
+    
+    @objc func fetchJSON(_ urlString: Any?) {
+        guard let urlString = urlString as? String else { return }
+        guard let url = URL(string: urlString) else { return }
+        if let data = try? Data(contentsOf: url) {
+            parse(json: data)
+            return
         }
-        
+        performSelector(onMainThread: #selector(showError), with: nil, waitUntilDone: false)
     }
     
     @objc func showCredits() {
@@ -78,12 +85,10 @@ class ViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    func showError() {
-        DispatchQueue.main.async { [weak self] in
-            let ac = UIAlertController(title: "Loading Error", message: "There was a problem loading the feed; please check your connection and try again.", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            self?.present(ac, animated: true)
-        }
+    @objc func showError() {
+        let ac = UIAlertController(title: "Loading Error", message: "There was a problem loading the feed; please check your connection and try again.", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        present(ac, animated: true)
     }
     
     func parse(json: Data) {
@@ -93,9 +98,16 @@ class ViewController: UITableViewController {
         if let jsonPetitions = try? decoder.decode(Petitions.self, from: json) {
             petitions = jsonPetitions.results
             filteredPetitions = petitions
+            //
+            // If I use tableView.performSelector(onMainThead:with:waitUntilDone)
+            // XCode issues a warning. The code works though. Decided to change to
+            // DispatchQueue.main.async to remove the warning.
+            //
             DispatchQueue.main.async { [weak self] in
                 self?.tableView.reloadData()
             }
+        } else {
+            performSelector(onMainThread: #selector(showError), with: nil, waitUntilDone: false)
         }
     }
 
