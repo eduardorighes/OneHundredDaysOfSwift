@@ -200,47 +200,52 @@ class ViewController: UIViewController {
     }
 
     func loadLevel() {
-        var clueString = ""
-        var solutionString = ""
-        var letterBits = [String]()
-        
-        if let levelFileURL = Bundle.main.url(forResource: "level\(level)", withExtension: "txt") {
-            if let levelContents = try? String(contentsOf: levelFileURL) {
-                var lines = levelContents.components(separatedBy: "\n")
-                lines.shuffle()
-                
-                levelQuestionCount = lines.count
-                
-                for (index, line) in lines.enumerated() {
-                    let parts = line.components(separatedBy: ": ")
-                    let answer = parts[0]
-                    let clue = parts[1]
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            
+            guard let level = self?.level else { return }
+            
+            var clueString = ""
+            var solutionString = ""
+            var letterBits = [String]()
+            
+            if let levelFileURL = Bundle.main.url(forResource: "level\(level)", withExtension: "txt") {
+                if let levelContents = try? String(contentsOf: levelFileURL) {
+                    var lines = levelContents.components(separatedBy: "\n")
+                    lines.shuffle()
                     
-                    clueString += "\(index + 1). \(clue)\n"
+                    self?.levelQuestionCount = lines.count
                     
-                    let solutionWord = answer.replacingOccurrences(of: "|", with: "")
-                    solutionString += "\(solutionWord.count) letters\n"
-                    solutions.append(solutionWord)
-                    
-                    let bits = answer.components(separatedBy: "|")
-                    letterBits += bits
+                    for (index, line) in lines.enumerated() {
+                        let parts = line.components(separatedBy: ": ")
+                        let answer = parts[0]
+                        let clue = parts[1]
+                        
+                        clueString += "\(index + 1). \(clue)\n"
+                        
+                        let solutionWord = answer.replacingOccurrences(of: "|", with: "")
+                        solutionString += "\(solutionWord.count) letters\n"
+                        self?.solutions.append(solutionWord)
+                        
+                        let bits = answer.components(separatedBy: "|")
+                        letterBits += bits
+                    }
                 }
             }
-        }
-        
-        letterBits.shuffle()
-        
-        if letterBits.count == letterButtons.count {
-            for i in 0 ..< letterButtons.count {
-                letterButtons[i].setTitle(letterBits[i], for: .normal)
+            
+            letterBits.shuffle()
+            
+            DispatchQueue.main.async { [weak self] in
+                guard let letterButtonCount = self?.letterButtons.count else { return }
+                if letterBits.count == letterButtonCount {
+                    for i in 0 ..< letterButtonCount {
+                        self?.letterButtons[i].setTitle(letterBits[i], for: .normal)
+                    }
+                }
+                self?.cluesLabel.text = clueString
+                self?.answersLabel.text = solutionString
             }
         }
-        
-        cluesLabel.text = clueString
-        answersLabel.text = solutionString
     }
     
-
-
 }
 
