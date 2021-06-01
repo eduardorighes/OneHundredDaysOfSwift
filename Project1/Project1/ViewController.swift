@@ -17,22 +17,24 @@ class ViewController: UITableViewController {
         title = "Storm Viewer"
         navigationController?.navigationBar.prefersLargeTitles = true
         
-        // An iOS app always has a resourcePath,
-        // so it is OK to force unwrap the value
-        
-        let fm = FileManager.default
-        let path = Bundle.main.resourcePath!
-        let items = try! fm.contentsOfDirectory(atPath: path)
-        
-        for item in items {
-            if item.hasPrefix("nssl") {
-                pictures.append(item)
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            // An iOS app always has a resourcePath,
+            // so it is OK to force unwrap the value
+            let fm = FileManager.default
+            let path = Bundle.main.resourcePath!
+            let items = try! fm.contentsOfDirectory(atPath: path)
+            
+            for item in items {
+                if item.hasPrefix("nssl") {
+                    self?.pictures.append(item)
+                }
+            }
+            self?.pictures.sort()
+            
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
             }
         }
-        
-        pictures.sort()
-        
-        print(pictures)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(recommendApp))
     }
