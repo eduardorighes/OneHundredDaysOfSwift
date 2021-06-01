@@ -65,15 +65,21 @@ class ViewController: UITableViewController {
     }
     
     func search(_ text: String) {
-        filteredPetitions = []
-        let lowercaseText = text.lowercased()
-        for petition in petitions {
-            if petition.title.lowercased().contains(lowercaseText) ||
-                petition.body.lowercased().contains(lowercaseText) {
-                filteredPetitions.append(petition)
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self = self else { return }
+            self.filteredPetitions = []
+            let lowercaseText = text.lowercased()
+            for petition in self.petitions {
+                if petition.title.lowercased().contains(lowercaseText) ||
+                    petition.body.lowercased().contains(lowercaseText) {
+                    self.filteredPetitions.append(petition)
+                }
+            }
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.tableView.reloadData()
             }
         }
-        tableView.reloadData()
     }
     
     func showError() {
