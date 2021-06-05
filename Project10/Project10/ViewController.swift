@@ -44,22 +44,71 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let person = people[indexPath.item]
         
-        let ac = UIAlertController(title: "Rename Person", message: nil, preferredStyle: .alert)
-        ac.addTextField()
-        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        ac.addAction(UIAlertAction(title: "OK", style: .default) { [weak self, weak ac] _ in
-            guard let newName = ac?.textFields?[0].text else { return }
-            person.name = newName
+        let ac = UIAlertController(title: "Person", message: nil, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "Rename...", style: .default) { [weak self] _ in
+            let renameController = UIAlertController(title: "Rename", message: nil, preferredStyle: .alert)
+            renameController.addTextField()
+            renameController.addAction(UIAlertAction(title: "OK", style: .default) { [weak renameController] _ in
+                guard let newName = renameController?.textFields?[0].text else { return }
+                if !newName.isEmpty {
+                    person.name = newName
+                    self?.collectionView.reloadData()
+                }
+            })
+            renameController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            self?.present(renameController, animated: true)
+        })
+        ac.addAction(UIAlertAction(title: "Delete", style: .default) { [weak self] _ in
+            guard let person = self?.people[indexPath.item] else {
+                fatalError("Trying to delete an item that does not exist.")
+            }
+            self?.people.remove(at: indexPath.item)
+            if let imagePath = self?.getDocumentsDirectory().appendingPathComponent(person.image) {
+                try? FileManager.default.removeItem(atPath: imagePath.path)
+            }
             self?.collectionView.reloadData()
         })
+        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         present(ac, animated: true)
     }
     
     @objc func addNewPerson() {
+                
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let ac = UIAlertController(title: "Select a picture", message: nil, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Camera", style: .default) { [weak self] _ in
+                guard let picker = self?.imagePicker(sourceType: .camera) else {
+                    fatalError("Camera source not available")
+                }
+                self?.present(picker, animated: true)
+            })
+            ac.addAction(UIAlertAction(title: "Photo Library", style: .default) { [weak self] _ in
+                guard let picker = self?.imagePicker(sourceType: .photoLibrary) else {
+                    fatalError("Photo Library source not available")
+                }
+                self?.present(picker, animated: true)
+            })
+            ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            present(ac, animated: true)
+        } else {
+            guard let picker = imagePicker(sourceType: .photoLibrary) else {
+                fatalError("Photo Library source not available")
+            }
+            present(picker, animated: true)
+        }
+    }
+    
+    func imagePicker(sourceType: UIImagePickerController.SourceType) -> UIImagePickerController? {
+        if !UIImagePickerController.isSourceTypeAvailable(sourceType) {
+            return nil
+        }
+        
         let picker = UIImagePickerController()
         picker.allowsEditing = true
         picker.delegate = self
-        present(picker, animated: true)
+        picker.sourceType = sourceType
+        
+        return picker
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
