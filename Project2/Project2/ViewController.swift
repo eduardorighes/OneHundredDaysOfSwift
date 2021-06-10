@@ -17,6 +17,7 @@ class ViewController: UIViewController {
             updateViewTitle()
         }
     }
+    var highScore = 0
     var correctAnswer = 0
     var countQuestions = 0
     
@@ -44,6 +45,9 @@ class ViewController: UIViewController {
         askQuestion(action: nil)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(showScore))
+        
+        let defaults = UserDefaults.standard
+        highScore = defaults.integer(forKey: "highScore")
     }
     
     @objc func showScore() {
@@ -92,8 +96,12 @@ class ViewController: UIViewController {
 
         if endGame {
             message = "You have answered \(countQuestions) questions\n"
+            if score > highScore {
+                message += "\nNEW HIGH SCORE!\n"
+                saveHighScore()
+            }
         }
-        message += "Your score is \(score)"
+        message += "Your score is \(score)."
         
         let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
         if endGame == false {
@@ -110,5 +118,10 @@ class ViewController: UIViewController {
         present(ac, animated: true)
     }
     
+    func saveHighScore() {
+        highScore = score
+        let defaults = UserDefaults.standard
+        defaults.set(highScore, forKey: "highScore")
+    }
 }
 
