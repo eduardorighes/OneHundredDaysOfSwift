@@ -46,10 +46,26 @@ enum WordError: Error {
     }
 }
 
+struct GameState: Codable {
+    var word: String
+    var anagrams: [String]
+}
+
 class ViewController: UITableViewController {
 
     var allWords = [String]()
     var usedWords = [String]()
+    
+    var state: GameState?
+    
+//    required init?(coder: NSCoder) {
+//        let defaults = UserDefaults.standard
+//        if let savedData = defaults.object(forKey: "state") as? Data {
+//            let jsonDecoder = JSONDecoder()
+//            self.state = try? jsonDecoder.decode(GameState.self, from: savedData)
+//        }
+//        super.init(coder: coder)
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,8 +73,8 @@ class ViewController: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForAnswer))
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(startGame))
         
-        if let usedWordsURL = Bundle.main.url(forResource: "start", withExtension: "txt") {
-            if let startWords = try? String(contentsOf: usedWordsURL) {
+        if let startWordsURL = Bundle.main.url(forResource: "start", withExtension: "txt") {
+            if let startWords = try? String(contentsOf: startWordsURL) {
                 allWords = startWords.components(separatedBy: "\n")
             }
         }
@@ -68,13 +84,35 @@ class ViewController: UITableViewController {
             allWords = [ "silkworm" ]
         }
         
-        startGame()
+        let defaults = UserDefaults.standard
+        if let savedData = defaults.object(forKey: "state") as? Data {
+            let jsonDecoder = JSONDecoder()
+            self.state = try? jsonDecoder.decode(GameState.self, from: savedData)
+        }
+        
+        if let state = state {
+            title = state.word
+            usedWords = state.anagrams
+        } else {
+            startGame()
+        }
     }
-
+    
     @objc func startGame() {
-        title = allWords.randomElement()
-        usedWords.removeAll(keepingCapacity: true)
-        tableView.reloadData()
+        if let word = allWords.randomElement() {
+            title = word
+            usedWords.removeAll(keepingCapacity: true)
+            if state == nil {
+                state = GameState(word: word, anagrams: [])
+            } else {
+                state?.word = word
+                state?.anagrams = []
+            }
+            save()
+            tableView.reloadData()
+        } else {
+            fatalError("Cannot pick a word. Fatal error.")
+        }
     }
     
     @objc func promptForAnswer() {
@@ -107,6 +145,11 @@ class ViewController: UITableViewController {
             // add the table row, it will fetch that
             let indexPath = IndexPath(row: 0, section: 0)
             tableView.insertRows(at: [indexPath], with: .automatic)
+            //
+            // Everything is in place, save game state
+            //
+            state?.anagrams.append(lowerAnswer)
+            save()
         } catch {
             //
             // error is implicitly declared in a catch block
@@ -175,6 +218,23 @@ class ViewController: UITableViewController {
         let misspelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")
         return misspelledRange.location == NSNotFound
     }
+    
+    func save() {
+        if let state = state {
+            let jsonEncoder = JSONEncoder()
+            do {
+                let savedData = try jsonEncoder.encode(state)
+                let defaults = UserDefaults.standard
+                defaults.set(savedData, forKey: "state")
+            } catch {
+                print("Failed to save data.")
+            }
+        } else {
+            print("No game state to save.")
+        }
+    }
+    
+    //MARK: - table view
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return usedWords.count
