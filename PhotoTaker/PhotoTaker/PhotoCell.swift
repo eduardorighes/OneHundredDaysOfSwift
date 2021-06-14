@@ -39,6 +39,7 @@ class PhotoCell: UITableViewCell {
             if let text = ac?.textFields?[0].text {
                 controller.photos[index.row].name = text
                 self?.label.text = text
+                controller.save()
             }
         })
         ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))

@@ -3,6 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -81,6 +82,35 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dhs-lj-Yck" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="36.231884057971016" y="131.91964285714286"/>
+        </scene>
+        <!--Detail View Controller-->
+        <scene sceneID="HLg-Jd-Ifi">
+            <objects>
+                <viewController storyboardIdentifier="Detail" id="UHr-jg-sha" customClass="DetailViewController" customModule="PhotoTaker" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="cjG-4T-AKA">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xcW-4T-2YR">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="tN2-fK-Cyt"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="xcW-4T-2YR" firstAttribute="top" secondItem="tN2-fK-Cyt" secondAttribute="top" id="26p-x5-Htq"/>
+                            <constraint firstItem="tN2-fK-Cyt" firstAttribute="trailing" secondItem="xcW-4T-2YR" secondAttribute="trailing" id="Fe7-gY-U0N"/>
+                            <constraint firstItem="xcW-4T-2YR" firstAttribute="leading" secondItem="tN2-fK-Cyt" secondAttribute="leading" id="O67-51-bLV"/>
+                            <constraint firstItem="tN2-fK-Cyt" firstAttribute="bottom" secondItem="xcW-4T-2YR" secondAttribute="bottom" id="UVQ-d7-7kX"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="xcW-4T-2YR" id="5Wb-4T-jRn"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eFs-mx-tc9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1660.8695652173915" y="131.91964285714286"/>
         </scene>
     </scenes>
     <resources>

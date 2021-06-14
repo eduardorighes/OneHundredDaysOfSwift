@@ -15,6 +15,8 @@
 		A03BB3302674DE4A00CE8A89 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A03BB32E2674DE4A00CE8A89 /* LaunchScreen.storyboard */; };
 		A03BB3382674E18000CE8A89 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03BB3372674E18000CE8A89 /* Photo.swift */; };
 		A03BB340267588A100CE8A89 /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03BB33F267588A100CE8A89 /* PhotoCell.swift */; };
+		A03BB3422677C36E00CE8A89 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03BB3412677C36E00CE8A89 /* DetailViewController.swift */; };
+		A03BB3442677C7A000CE8A89 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03BB3432677C7A000CE8A89 /* UIViewController+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		A03BB3312674DE4A00CE8A89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A03BB3372674E18000CE8A89 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		A03BB33F267588A100CE8A89 /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
+		A03BB3412677C36E00CE8A89 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		A03BB3432677C7A000CE8A89 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +70,8 @@
 				A03BB33F267588A100CE8A89 /* PhotoCell.swift */,
 				A03BB3372674E18000CE8A89 /* Photo.swift */,
 				A03BB3292674DE4800CE8A89 /* Main.storyboard */,
+				A03BB3412677C36E00CE8A89 /* DetailViewController.swift */,
+				A03BB3432677C7A000CE8A89 /* UIViewController+Extension.swift */,
 				A03BB32C2674DE4A00CE8A89 /* Assets.xcassets */,
 				A03BB32E2674DE4A00CE8A89 /* LaunchScreen.storyboard */,
 				A03BB3312674DE4A00CE8A89 /* Info.plist */,
@@ -146,6 +152,8 @@
 				A03BB3382674E18000CE8A89 /* Photo.swift in Sources */,
 				A03BB340267588A100CE8A89 /* PhotoCell.swift in Sources */,
 				A03BB3282674DE4800CE8A89 /* ViewController.swift in Sources */,
+				A03BB3422677C36E00CE8A89 /* DetailViewController.swift in Sources */,
+				A03BB3442677C7A000CE8A89 /* UIViewController+Extension.swift in Sources */,
 				A03BB3242674DE4800CE8A89 /* AppDelegate.swift in Sources */,
 				A03BB3262674DE4800CE8A89 /* SceneDelegate.swift in Sources */,
 			);

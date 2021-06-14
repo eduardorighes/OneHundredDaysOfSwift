@@ -18,6 +18,8 @@ class ViewController: UITableViewController, UIImagePickerControllerDelegate, UI
         navigationController?.navigationBar.prefersLargeTitles = true
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(takePhoto))
+        
+        load()
     }
     
     @objc func takePhoto() {
@@ -49,9 +51,11 @@ class ViewController: UITableViewController, UIImagePickerControllerDelegate, UI
             try? jpegData.write(to: imagePath)
         }
         let photo = Photo(name: "New Photo", image: imageName)
-        //photos.append(photo)
+
         photos.insert(photo, at: 0)
         tableView.reloadData()
+
+        save()
         
         dismiss(animated: true)
     }
@@ -68,27 +72,52 @@ class ViewController: UITableViewController, UIImagePickerControllerDelegate, UI
         }
         cell.tableViewController = self
         cell.cellIndex = indexPath
-                
-        let photo = photos[indexPath.row]
-        let imageURL = getDocumentsDirectory().appendingPathComponent(photo.image)
-        
-        cell.photo.image = UIImage(contentsOfFile: imageURL.path)
+                                
+        cell.photo.image = imageForIndexPath(indexPath: indexPath)
         cell.photo.layer.cornerRadius = 7
         cell.photo.layer.borderWidth = 2
         cell.photo.layer.borderColor = UIColor(white: 0, alpha: 0.3).cgColor
 
+        let photo = photos[indexPath.row]
         cell.label.text = photo.name
-        
-        
+                
         return cell
     }
-
-    //MARK: - helper methods
     
-    func getDocumentsDirectory() -> URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        return paths[0]
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let detail = storyboard?.instantiateViewController(withIdentifier: "Detail") as? DetailViewController else {
+            fatalError("Failed to instantiate detail view controller.")
+        }
+        detail.photo = photos[indexPath.row]
+        navigationController?.pushViewController(detail, animated: true)
     }
 
+    //MARK: - helpers
+    
+    func save() {
+        let encoder = JSONEncoder()
+        if let savedData = try? encoder.encode(photos) {
+            do {
+                try savedData.write(to: getDocumentsDirectory().appendingPathComponent("photos"))
+            } catch {
+                print("Failed to save photos list.")
+            }
+        }
+    }
+    
+    func load() {
+        if let savedData = try? Data(contentsOf: getDocumentsDirectory().appendingPathComponent("photos")) {
+            let encoder = JSONDecoder()
+            if let loadedPhotos = try? encoder.decode([Photo].self, from: savedData) {
+                photos = loadedPhotos
+            }
+        }
+    }
+        
+    func imageForIndexPath(indexPath: IndexPath) -> UIImage? {
+        let photo = photos[indexPath.row]
+        let imageURL = getDocumentsDirectory().appendingPathComponent(photo.image)
+        return UIImage(contentsOfFile: imageURL.path)
+    }
 }
 
