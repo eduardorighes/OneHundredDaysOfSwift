@@ -47,9 +47,9 @@
                                 </connections>
                             </slider>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hsr-el-Dsa">
-                                <rect key="frame" x="20" y="798" width="120" height="44"/>
+                                <rect key="frame" x="20" y="798" width="140" height="44"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="120" id="7MD-NG-weq"/>
+                                    <constraint firstAttribute="width" constant="140" id="7MD-NG-weq"/>
                                     <constraint firstAttribute="height" constant="44" id="SoM-vO-CDT"/>
                                 </constraints>
                                 <state key="normal" title="Change Filter"/>
@@ -90,6 +90,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="Cla-RH-f8t"/>
                     <connections>
+                        <outlet property="changeFilterButton" destination="Hsr-el-Dsa" id="cCQ-Ed-C12"/>
                         <outlet property="imageView" destination="waF-JJ-ZSa" id="xj9-et-4wq"/>
                         <outlet property="intensity" destination="8pf-5n-tQq" id="ESZ-gY-ra6"/>
                     </connections>

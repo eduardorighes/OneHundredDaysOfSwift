@@ -12,7 +12,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var intensity: UISlider!
+    @IBOutlet var changeFilterButton: UIButton!
     
+    var currentFilterName = "CISepiaTone" {
+        didSet {
+            changeFilterButton.setTitle(currentFilterName, for: .normal)
+        }
+    }
     var currentImage: UIImage!
     
     var context: CIContext!
@@ -24,8 +30,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         title = "Instafilter"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(importPicture))
         
+        currentFilterName = "CISepiaTone"
         context = CIContext()
-        currentFilter = CIFilter(name: "CISepiaTone")
+        currentFilter = CIFilter(name: currentFilterName)
+        
     }
     
     func applyProcessing() {
@@ -53,12 +61,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func setFilter(action: UIAlertAction) {
-        // make sure we have a valid image
-        guard currentImage != nil else { return }
+
+        // the following 3 operations is for setting the filter
+        // without having an image
+        
         // read the action's title
         guard let actionTitle = action.title else { return }
+        // update button title
+        currentFilterName = actionTitle
         // create a new CIFilter with the action's title
         currentFilter = CIFilter(name: actionTitle)
+
+        // Now if we have an image, apply the filter
+        
+        // make sure we have a valid image
+        guard currentImage != nil else { return }
         let beginImage = CIImage(image: currentImage)
         currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
         // apply the filter
@@ -104,7 +121,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func save(_ sender: Any) {
-        guard let image = imageView.image else { return }
+        guard let image = imageView.image else {
+            let ac = UIAlertController(title: "Missing Picture", message: "You have not selected a picture!", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+            return
+        }
         UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
     }
     
