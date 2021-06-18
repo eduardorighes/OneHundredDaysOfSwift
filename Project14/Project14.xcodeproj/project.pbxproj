@@ -16,6 +16,7 @@
 		A03BB388267BC0F100CE8A89 /* whack.caf in Resources */ = {isa = PBXBuildFile; fileRef = A03BB386267BC0F100CE8A89 /* whack.caf */; };
 		A03BB389267BC0F100CE8A89 /* whackBad.caf in Resources */ = {isa = PBXBuildFile; fileRef = A03BB387267BC0F100CE8A89 /* whackBad.caf */; };
 		A03BB38B267BF67200CE8A89 /* WhackSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03BB38A267BF67200CE8A89 /* WhackSlot.swift */; };
+		A03BB38D267D0FB300CE8A89 /* gameOver.m4a in Resources */ = {isa = PBXBuildFile; fileRef = A03BB38C267D0FB300CE8A89 /* gameOver.m4a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		A03BB386267BC0F100CE8A89 /* whack.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = whack.caf; sourceTree = "<group>"; };
 		A03BB387267BC0F100CE8A89 /* whackBad.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = whackBad.caf; sourceTree = "<group>"; };
 		A03BB38A267BF67200CE8A89 /* WhackSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhackSlot.swift; sourceTree = "<group>"; };
+		A03BB38C267D0FB300CE8A89 /* gameOver.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = gameOver.m4a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 				A03BB380267BC06600CE8A89 /* Info.plist */,
 				A03BB386267BC0F100CE8A89 /* whack.caf */,
 				A03BB387267BC0F100CE8A89 /* whackBad.caf */,
+				A03BB38C267D0FB300CE8A89 /* gameOver.m4a */,
 			);
 			path = Project14;
 			sourceTree = "<group>";
@@ -137,6 +140,7 @@
 				A03BB37D267BC06500CE8A89 /* Main.storyboard in Resources */,
 				A03BB374267BC06400CE8A89 /* GameScene.sks in Resources */,
 				A03BB37F267BC06600CE8A89 /* Assets.xcassets in Resources */,
+				A03BB38D267D0FB300CE8A89 /* gameOver.m4a in Resources */,
 				A03BB388267BC0F100CE8A89 /* whack.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
