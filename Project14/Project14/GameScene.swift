@@ -19,6 +19,8 @@ class GameScene: SKScene {
         }
     }
     
+    var numRounds = 0
+    
     var popupTime = 0.85
     
     override func didMove(to view: SKView) {
@@ -46,7 +48,28 @@ class GameScene: SKScene {
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        let location = touch.location(in: self)
+        let tappedNodes = nodes(at: location)
         
+        for node in tappedNodes {
+            guard let whackSlot = node.parent?.parent as? WhackSlot else { continue }
+            
+            if !whackSlot.isVisible { continue }
+            if whackSlot.isHit { continue }
+            whackSlot.hit()
+            
+            whackSlot.charNode.xScale = 0.85
+            whackSlot.charNode.yScale = 0.85
+            
+            if node.name == "charFriend" {
+                score -= 5
+                run(SKAction.playSoundFileNamed("whackBad.caf", waitForCompletion: false))
+            } else if node.name == "charEnemy" {
+                score += 1
+                run(SKAction.playSoundFileNamed("whack.caf", waitForCompletion: false))
+            }
+        }
     }
     
     func createSlot(at position: CGPoint) {
@@ -57,6 +80,22 @@ class GameScene: SKScene {
     }
     
     func createEnemy() {
+        
+        numRounds += 1
+        
+        if numRounds >= 30 {
+            for slot in slots {
+                slot.hide()
+            }
+            
+            let gameOver = SKSpriteNode(imageNamed: "gameOver")
+            gameOver.position = CGPoint(x: 512, y: 384)
+            gameOver.zPosition = 1
+            addChild(gameOver)
+            
+            return
+        }
+        
         popupTime *= 0.991
         
         slots.shuffle()
