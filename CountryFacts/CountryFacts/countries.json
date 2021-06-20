@@ -1,0 +1,28 @@
+{
+	"countries": [
+		{
+			"name": "Brazil",
+            "language": "Brazilian Portuguese",
+            "population": 200000000,
+			"currency": "BRL",
+            "flag": "https://upload.wikimedia.org/wikipedia/en/thumb/0/05/Flag_of_Brazil.svg/720px-Flag_of_Brazil.svg.png",
+            "locale": "pt-BR"
+		},
+		{
+			"name": "United Kingdom",
+            "language": "English",
+            "population": 65000000,
+			"currency": "GBP",
+            "flag": "https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Flag_of_the_United_Kingdom.svg/800px-Flag_of_the_United_Kingdom.svg.png",
+            "locale": "en-GB"
+		},
+		{
+			"name": "United States",
+            "language": "English",
+            "population": 340000000,
+			"currency": "USD",
+            "flag": "https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/800px-Flag_of_the_United_States.svg.png",
+            "locale": "en-US"
+		}
+	]	
+}
