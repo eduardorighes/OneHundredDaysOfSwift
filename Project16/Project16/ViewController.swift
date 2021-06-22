@@ -20,6 +20,12 @@ class ViewController: UIViewController, MKMapViewDelegate {
         let rome = Capital(title: "Rome", coordinate: CLLocationCoordinate2D(latitude: 41.9, longitude: 12.5), info: "Has a whole country inside it.")
         let washington = Capital(title: "Washington DC", coordinate: CLLocationCoordinate2D(latitude: 38.895111, longitude: -77.036667), info: "Named after George himself.")
         
+        london.wikiURL = "https://en.wikipedia.org/wiki/London"
+        oslo.wikiURL = "https://en.wikipedia.org/wiki/Oslo"
+        paris.wikiURL = "https://en.wikipedia.org/wiki/Paris"
+        rome.wikiURL = "https://en.wikipedia.org/wiki/Rome"
+        washington.wikiURL = "https://en.wikipedia.org/wiki/Washington,_D.C."
+        
         mapView.addAnnotations([london, oslo, paris, rome, washington])
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(changeMapType))
@@ -73,12 +79,16 @@ class ViewController: UIViewController, MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         guard let capital = view.annotation as? Capital else { return }
         
-        let placeName = capital.title
-        let placeInfo = capital.info
+//        let placeName = capital.title
+//        let placeInfo = capital.info
+//
+//        let ac = UIAlertController(title: placeName, message: placeInfo, preferredStyle: .alert)
+//        ac.addAction(UIAlertAction(title: "OK", style: .default))
+//        present(ac, animated: true)
         
-        let ac = UIAlertController(title: placeName, message: placeInfo, preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "OK", style: .default))
-        present(ac, animated: true)
+        let capitalInfoViewController = CapitalInfoViewController()
+        capitalInfoViewController.capital = capital
+        navigationController?.pushViewController(capitalInfoViewController, animated: true)
     }
 }
 

@@ -14,6 +14,7 @@
 		A03BB3FA268114F700CE8A89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A03BB3F9268114F700CE8A89 /* Assets.xcassets */; };
 		A03BB3FD268114F700CE8A89 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A03BB3FB268114F700CE8A89 /* LaunchScreen.storyboard */; };
 		A03BB40526811AB700CE8A89 /* Capital.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03BB40426811AB700CE8A89 /* Capital.swift */; };
+		A084DE112682815100B177FA /* CapitalInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A084DE102682815100B177FA /* CapitalInfoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		A03BB3FC268114F700CE8A89 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A03BB3FE268114F700CE8A89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A03BB40426811AB700CE8A89 /* Capital.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capital.swift; sourceTree = "<group>"; };
+		A084DE102682815100B177FA /* CapitalInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapitalInfoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				A03BB3F4268114F400CE8A89 /* ViewController.swift */,
 				A03BB40426811AB700CE8A89 /* Capital.swift */,
 				A03BB3F6268114F400CE8A89 /* Main.storyboard */,
+				A084DE102682815100B177FA /* CapitalInfoViewController.swift */,
 				A03BB3F9268114F700CE8A89 /* Assets.xcassets */,
 				A03BB3FB268114F700CE8A89 /* LaunchScreen.storyboard */,
 				A03BB3FE268114F700CE8A89 /* Info.plist */,
@@ -141,6 +144,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A03BB3F5268114F400CE8A89 /* ViewController.swift in Sources */,
+				A084DE112682815100B177FA /* CapitalInfoViewController.swift in Sources */,
 				A03BB3F1268114F400CE8A89 /* AppDelegate.swift in Sources */,
 				A03BB40526811AB700CE8A89 /* Capital.swift in Sources */,
 				A03BB3F3268114F400CE8A89 /* SceneDelegate.swift in Sources */,
