@@ -21,7 +21,33 @@ class ViewController: UIViewController, MKMapViewDelegate {
         let washington = Capital(title: "Washington DC", coordinate: CLLocationCoordinate2D(latitude: 38.895111, longitude: -77.036667), info: "Named after George himself.")
         
         mapView.addAnnotations([london, oslo, paris, rome, washington])
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(changeMapType))
     }
+    
+    @objc func changeMapType() {
+        let ac = UIAlertController(title: "Map View Type", message: "Change the map view type to standard, satellite, etc.", preferredStyle: .actionSheet)
+        ac.addAction(UIAlertAction(title: "Standard", style: .default) { [weak self] _ in
+            self?.mapView.mapType = .standard
+        })
+        ac.addAction(UIAlertAction(title: "Satellite", style: .default) { [weak self] _ in
+            self?.mapView.mapType = .satellite
+        })
+        ac.addAction(UIAlertAction(title: "Hybrid", style: .default) { [weak self] _ in
+            self?.mapView.mapType = .hybrid
+        })
+        ac.addAction(UIAlertAction(title: "Satellite Flyover", style: .default) { [weak self] _ in
+            self?.mapView.mapType = .satelliteFlyover
+        })
+        ac.addAction(UIAlertAction(title: "Hybrid Flyover", style: .default) { [weak self] _ in
+            self?.mapView.mapType = .hybridFlyover
+        })
+        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        present(ac, animated: true)
+    }
+    
+    //MARK: - map view
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard annotation is Capital else { return nil }
@@ -38,7 +64,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
             let btn = UIButton(type: .detailDisclosure)
             annotationView?.rightCalloutAccessoryView = btn
         } else {
-            annotationView?.annotation = annotation            
+            annotationView?.annotation = annotation
         }
         
         return annotationView
